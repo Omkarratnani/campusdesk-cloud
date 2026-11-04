@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block content %}
+<div class="section-heading"><div><div class="eyebrow">System analytics · Role-based access</div><h1>Admin overview</h1><div class="subtle">Monitor campus support load and update ticket status.</div></div><a href="/health" class="btn btn-outline">● &nbsp; Health endpoint</a></div>
+<div class="stat-grid">
+<div class="stat"><div class="symbol">▦</div><span>Total Tickets</span><div class="num">{{ stats.total }}</div></div>
+<div class="stat"><div class="symbol">◷</div><span>Open Tickets</span><div class="num">{{ stats.open }}</div></div>
+<div class="stat amber"><div class="symbol">↗</div><span>In Progress</span><div class="num">{{ stats.progress }}</div></div>
+<div class="stat green"><div class="symbol">✓</div><span>Resolved</span><div class="num">{{ stats.resolved }}</div></div>
+</div><div class="two-col"><div class="panel"><div class="panel-head"><h2>Recent support requests</h2><small>{{ tickets|length }} shown</small></div>
+<div style="padding:12px 24px;border-bottom:1px solid #edf0f6"><div class="filter-links">
+{% for st in ['All','Open','In Progress','Resolved'] %}<a href="/admin?state={{ st|urlencode }}" class="{% if st == active_state %}selected{% endif %}">{{ st }}</a>{% endfor %}
+</div></div><table><thead><tr><th>Issue</th><th>Priority</th><th>Status</th></tr></thead><tbody>
+{% for t in tickets %}<tr><td><a href="/tickets/{{ t.id }}" class="ticket-title">{{ t.title }}</a><div class="secondary">#{{ '%03d'|format(t.id) }} · {{ t.owner.name }}</div></td><td class="priority-{{ t.priority|lower }}">{{ t.priority }}</td><td><span class="pill {% if t.state=='Open' %}pill-open{% elif t.state=='Resolved' %}pill-resolved{% else %}pill-progress{% endif %}">{{ t.state }}</span></td></tr>{% else %}<tr><td colspan="3">No matching tickets.</td></tr>{% endfor %}
+</tbody></table></div><div class="panel"><div class="panel-head"><h2>Tickets by category</h2><small>Workload distribution</small></div><div class="chart-list">
+{% for label, count in category_counts %}<div class="chart-row"><div class="chart-label"><span>{{ label }}</span><span>{{ count }}</span></div><div class="track"><div class="fill" style="width:{{ (count * 100 / stats.total)|round(0)|int if stats.total else 0 }}%"></div></div></div>{% endfor %}
+</div></div></div>{% endblock %}

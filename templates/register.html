@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block guest_content %}<div class="auth-wrap"><div class="auth-card"><div class="eyebrow">Join your support portal</div><h1>Create your account</h1><p class="subtle">Start tracking your campus support requests.</p>
+{% if error %}<div class="alert">{{ error }}</div>{% endif %}
+<form method="post" action="/register"><input type="hidden" name="_csrf" value="{{ csrf }}">
+<div class="field"><label for="name">Full name</label><input id="name" name="name" placeholder="Your name" minlength="2" maxlength="80" required></div>
+<div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@college.edu" required autocomplete="email"></div>
+<div class="field"><label for="password">Password</label><input id="password" name="password" type="password" minlength="10" maxlength="128" required autocomplete="new-password"><div class="hint">Use at least 10 characters; do not reuse another password.</div></div>
+<button class="btn" type="submit">Create account →</button></form><div class="bottom">Have an account? <a href="/login">Sign in</a></div></div></div>{% endblock %}

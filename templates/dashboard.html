@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block content %}
+<div class="section-heading"><div><div class="eyebrow">Student workspace</div><h1>My support dashboard</h1><div class="subtle">Track and manage your support requests in one place.</div></div><a href="/tickets/new" class="btn">＋ &nbsp; Create new ticket</a></div>
+<div class="stat-grid">
+<div class="stat"><div class="symbol">▦</div><span>Total Tickets</span><div class="num">{{ stats.total }}</div></div>
+<div class="stat"><div class="symbol">◷</div><span>Open Tickets</span><div class="num">{{ stats.open }}</div></div>
+<div class="stat amber"><div class="symbol">↗</div><span>In Progress</span><div class="num">{{ stats.progress }}</div></div>
+<div class="stat green"><div class="symbol">✓</div><span>Resolved</span><div class="num">{{ stats.resolved }}</div></div>
+</div>
+<div class="panel"><div class="panel-head"><h2>My support requests</h2><small>Recent first · {{ tickets|length }} tickets</small></div>
+{% if tickets %}<table><thead><tr><th>Ticket</th><th>Category</th><th>Priority</th><th>Status</th><th>Created</th><th></th></tr></thead><tbody>
+{% for t in tickets %}<tr><td><a class="ticket-title" href="/tickets/{{ t.id }}">#{{ '%03d'|format(t.id) }} &nbsp; {{ t.title }}</a></td><td>{{ t.category }}</td><td class="priority-{{ t.priority|lower }}">{{ t.priority }}</td><td><span class="pill {% if t.state == 'Open' %}pill-open{% elif t.state == 'Resolved' %}pill-resolved{% else %}pill-progress{% endif %}">{{ t.state }}</span></td><td class="secondary">{{ t.created_at.strftime('%d %b %Y') }}</td><td><a href="/tickets/{{ t.id }}" style="color:#4169ff;font-weight:800">View →</a></td></tr>{% endfor %}
+</tbody></table>{% else %}<div class="empty"><h3>No tickets yet</h3><p>Your first support request will appear here.</p><a href="/tickets/new" class="btn">Submit a ticket</a></div>{% endif %}</div>
+{% endblock %}

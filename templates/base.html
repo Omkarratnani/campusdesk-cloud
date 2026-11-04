@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }} · CampusDesk Cloud</title><link rel="stylesheet" href="/static/style.css"></head><body>
+{% if user %}
+<div class="layout"><aside class="sidebar">
+  <a href="/" class="brand"><span class="brand-mark">C</span><span>CampusDesk<small>CLOUD HELP DESK</small></span></a>
+  {% if user.role == 'admin' %}
+  <a class="nav-link {% if request.url.path == '/admin' %}active{% endif %}" href="/admin"><span class="nav-ico">▦</span> Admin overview</a>
+  <a class="nav-link" href="/api/summary"><span class="nav-ico">◈</span> Live API metrics</a>
+  {% else %}
+  <a class="nav-link {% if request.url.path == '/dashboard' %}active{% endif %}" href="/dashboard"><span class="nav-ico">▦</span> My dashboard</a>
+  <a class="nav-link {% if request.url.path == '/tickets/new' %}active{% endif %}" href="/tickets/new"><span class="nav-ico">＋</span> Create ticket</a>
+  {% endif %}
+  <div class="side-spacer"></div><div class="side-foot"><strong>☁ Cloud-native case study</strong><br>Secure tickets · PaaS · PostgreSQL<br><span class="powered">21CSE362T / FT-III</span></div>
+  <form action="/logout" method="post" class="logout-form"><input type="hidden" name="_csrf" value="{{ csrf }}"><button class="logout-btn" type="submit">↪ &nbsp; Sign out</button></form>
+</aside>
+<main class="main"><header class="topbar"><div class="top-title">CampusDesk / {% if user.role == 'admin' %}Administration{% else %}Student portal{% endif %}</div>
+<div class="top-right"><div><strong>{{ user.name }}</strong><small>{{ user.role|capitalize }} account</small></div><div class="avatar">{{ user.name[0]|upper }}</div></div></header>
+<div class="content">{% block content %}{% endblock %}</div></main></div>
+{% else %}
+<header class="guest-top"><a class="guest-brand" href="/"><span class="brand-mark" style="color:white">C</span>CampusDesk <span style="color:#4169ff">Cloud</span></a><div><a class="btn btn-outline btn-small" href="/login">Sign in</a> <a class="btn btn-small" href="/register">Get started</a></div></header>
+{% block guest_content %}{% endblock %}
+{% endif %}
+</body></html>

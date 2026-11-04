@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block guest_content %}<div class="auth-wrap"><div class="auth-card"><div class="eyebrow">Welcome back</div><h1>Sign in to CampusDesk</h1><p class="subtle">Access your tickets and updates securely.</p>
+{% if error %}<div class="alert">{{ error }}</div>{% endif %}
+<form method="post" action="/login"><input type="hidden" name="_csrf" value="{{ csrf }}">
+<div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@college.edu" required maxlength="160" autocomplete="email"></div>
+<div class="field"><label for="password">Password</label><input id="password" name="password" type="password" required autocomplete="current-password"></div>
+<button class="btn" type="submit">Sign in →</button></form><div class="bottom">New here? <a href="/register">Create an account</a></div></div></div>{% endblock %}
