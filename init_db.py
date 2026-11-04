@@ -5,6 +5,12 @@ from app import Base, engine, SessionLocal, User, pw_hash
 
 
 def initialize():
+
+    if os.environ.get("HTTPS_ONLY") == "1":
+        if not os.environ.get("DATABASE_URL", "").startswith(("postgresql://", "postgres://", "postgresql+psycopg://")):
+            raise RuntimeError("Production deployment requires DATABASE_URL pointing to managed PostgreSQL")
+        if len(os.environ.get("SECRET_KEY", "")) < 32:
+            raise RuntimeError("Production deployment requires a strong SECRET_KEY (32+ characters)")
     Base.metadata.create_all(bind=engine)
     admin_email = os.environ.get('ADMIN_EMAIL', '').strip().lower()
     admin_password = os.environ.get('ADMIN_PASSWORD', '')
