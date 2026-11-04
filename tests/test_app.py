@@ -30,8 +30,7 @@ def test_admin_update_and_api():
 import re
 from fastapi.testclient import TestClient
 from app import app
-from seed_demo import seed
-seed()
+from seed_demo import *
 with TestClient(app) as c:
     csrf=re.search(r'name="_csrf" value="([^"]+)',c.get('/login').text).group(1)
     r=c.post('/login',data={'email':'admin@demo.edu','password':'AdminDemo123!','_csrf':csrf},follow_redirects=True)
